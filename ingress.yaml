@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+spec:
+  rules:
+  - host: frame.com
+    http:
+      paths:
+      - path: /caro
+        backend:
+          serviceName: caro-svc
+          servicePort: 80
+      - path: /martin
+        backend:
+          serviceName: martin-svc
+          servicePort: 80
