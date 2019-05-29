@@ -1,0 +1,99 @@
+version: '2.1'
+
+services:
+  r1:
+    build: .
+    volumes:
+      - ./volumes/quagga/r1/zebra.conf:/etc/quagga/zebra.conf:ro
+      - ./volumes/quagga/r1/ospfd.conf:/etc/quagga/ospfd.conf:ro
+      - ./volumes/quagga/r1/ospf6d.conf:/etc/quagga/ospf6d.conf:ro
+      - ./volumes/supervisord.conf:/etc/supervisord.conf:ro
+    image: ospf:AS101
+    privileged: true
+    ports:
+      #admin
+      - 10011:2601
+      #ospf
+      - 10012:2604
+      #ospf ipv6
+      - 10013:2606
+    networks:
+      oam:
+        ipv4_address: 192.11.2.3
+        ipv6_address: 2001:0002:0011::3
+      nr3:
+        ipv4_address: 192.11.7.3
+        ipv6_address: 2001:0007:0011::3
+      nr1:
+        ipv4_address: 192.11.1.2
+        ipv6_address: 2001:0001:0011::2
+          
+  r2:
+    build: .
+    volumes:
+      - ./volumes/quagga/r2/zebra.conf:/etc/quagga/zebra.conf:ro
+      - ./volumes/quagga/r2/ospfd.conf:/etc/quagga/ospfd.conf:ro
+      - ./volumes/quagga/r2/ospf6d.conf:/etc/quagga/ospf6d.conf:ro
+      - ./volumes/supervisord.conf:/etc/supervisord.conf:ro
+    image:  ospf:AS101
+    privileged: true
+    ports:
+      #admin
+      - 10021:2601
+      #ospf
+      - 10022:2604
+      #ospf ipv6
+      - 10023:2606
+    networks:
+      oam:
+        ipv4_address: 192.11.2.2
+        ipv6_address: 2001:0002:0011::2
+      nr2:
+        ipv4_address: 192.11.5.3
+        ipv6_address: 2001:0005:0011::3
+
+  nginx: 
+    image: nginx
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=foobar.com
+      - NGINX_PORT=80
+    networks: 
+      nr3:
+        ipv4_address: 192.11.7.2
+        ipv6_address: 2001:0007:0011::2
+
+networks:
+  oam:
+    driver: "bridge"
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.11.2.0/24
+        - subnet: 2001:0002:0011::/64
+  nr1:
+    driver: "bridge"
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.11.1.0/24
+        - subnet: 2001:0001:0011::/64
+  nr2:
+    driver: "bridge"
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.11.5.0/24
+        - subnet: 2001:0005:0011::/64
+  nr3:
+    driver: "bridge"
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.11.7.0/24
+        - subnet: 2001:0007:0011::/64

@@ -1,0 +1,76 @@
+version: '2.1'
+
+services:
+  b1:
+    build: ./../images/bgp/.
+    volumes:
+      - ./../volumes/bgp/b1/zebra.conf:/etc/quagga/zebra.conf:ro
+      - ./../volumes/bgp/b1/bgpd.conf:/etc/quagga/bgpd.conf:ro
+      - ./../volumes/bgp/supervisord.conf:/etc/supervisord.conf:ro
+    image: bgp:AS6600
+    privileged: true
+    ports:
+      #admin
+      - 10201:2601
+      #ospf
+      - 10204:2604
+      #bgp
+      - 10205:2605
+    networks:
+      nr0:
+        ipv4_address: 200.9.20.3
+      nr1:
+        ipv4_address: 200.9.21.3
+      nr2:
+        ipv4_address: 200.9.21.35
+      oam:
+        ipv4_address: 70.0.0.6
+  r1:
+    build: ./../images/ospf/.
+    volumes:
+      - ./../volumes/ospf/r1/zebra.conf:/etc/quagga/zebra.conf:ro
+      - ./../volumes/ospf/r1/ospfd.conf:/etc/quagga/ospfd.conf:ro
+      - ./../volumes/ospf/supervisord.conf:/etc/supervisord.conf:ro
+    image: ospf:AS6600
+    privileged: true
+    ports:
+      #admin
+      - 10011:2601
+      #ospf
+      - 10012:2604
+      #bgp
+      - 10014:2605
+    networks:
+      nr0:
+        ipv4_address: 200.9.20.2
+      nr1:
+        ipv4_address: 200.9.21.2
+      nr2:
+        ipv4_address: 200.9.21.34
+
+networks:
+  nr0:
+    driver: "bridge"
+    ipam:
+      driver: default
+      config:
+        - subnet: 200.9.20.0/24
+  nr1:
+    driver: "bridge"
+    ipam:
+      driver: default
+      config:
+        - subnet: 200.9.21.0/27
+  nr2:
+    driver: "bridge"
+    ipam:
+      driver: default
+      config:
+        - subnet: 200.9.21.32/29
+  oam:
+    driver: "bridge"
+    ipam:
+      driver: default
+      config:
+        - subnet: 70.0.0.0/24
+    
