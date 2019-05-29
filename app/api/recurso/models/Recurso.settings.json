@@ -1,0 +1,21 @@
+{
+  "connection": "default",
+  "collectionName": "recursos",
+  "info": {
+    "name": "Recurso",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "serie_number": {
+      "type": "biginteger"
+    },
+    "online": {
+      "type": "boolean"
+    }
+  }
+}

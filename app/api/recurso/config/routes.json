@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/recursos",
+      "handler": "Recurso.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/recursos/count",
+      "handler": "Recurso.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/recursos/:id",
+      "handler": "Recurso.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/recursos",
+      "handler": "Recurso.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/recursos/:id",
+      "handler": "Recurso.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/recursos/:id",
+      "handler": "Recurso.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
