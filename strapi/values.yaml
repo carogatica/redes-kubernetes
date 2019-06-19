@@ -1,0 +1,23 @@
+# Default values for strapi.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: "1"
+
+imageS:
+  repository: martintarres/strapi-app
+  tag: latest
+  pullPolicy: IfNotPresent
+  port: 1337
+
+imageM:
+  repository: mongo
+  pullPolicy: IfNotPresent
+  port: 27017
+
+service:
+  port: 1337
+
+ingress:
+  host: f.efn.unc.edu.ar
+  port: 1337
